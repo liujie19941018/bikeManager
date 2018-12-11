@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/vue-resource.min.js"></script>
+    <script type="text/javascript" src="js/json2.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+<body>
+<div id="user" style="font-weight: bold;font-size: 80px">
+    <a v-if="user==0">你好！{{message.username}}</a>
+    <a v-if="user==1">请先点击登陆！</a>
+</div>
+</body>
+<script type="text/javascript">
+    var user=JSON.parse(sessionStorage.getItem("user"));
+    var vue=new Vue({
+        el:"#user",
+        data:{
+            message:user,
+            user:1
+        }
+    });
+    $(function () {
+        if(user==""||user==null){
+            vue.user=1;
+        }else {
+            vue.user=0;
+        }
+    });
+</script>
+</html>

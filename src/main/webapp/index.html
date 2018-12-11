@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/public.css">
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/vue-resource.min.js"></script>
+    <script type="text/javascript" src="js/json2.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <style type="text/css">
+        #usermes li{
+            margin-top: -50px;
+        }
+        #usermes{
+            background: #6bc095;
+            margin-top: 50px;
+            margin-left: 60px;
+            text-align: center;
+            width: 240px;
+            color: white;
+            font-family: 微软雅黑;
+            font-weight: bold;
+            height: 200px;
+            display: block;
+        }
+    </style>
+
+
+</head>
+<body>
+<div class="public-header-warrp">
+    <div class="public-header">
+        <div class="content">
+            <div class="public-header-logo"><a><i>LOGO</i>
+                <h3>aowin</h3></a></div>
+            <div class="public-header-admin fr">
+                <div id="user">
+                    <a v-if="userif==1" style="color: black;font-size: 20px">你好！{{message.username}}</a>
+                    <a href="login.html" v-if="userif==0" class="public-header-man" style="margin-left: 200px">登陆</a>
+                    <a href="javascript:void(0)"v-if="userif==1"@click="out" class="public-header-loginout" >安全退出</a>
+                    <a href="javascript:void(0)"v-if="userif==1"@click="mes" class="public-header-usermess" >个人信息</a>
+                    <ul v-if="count==0"></ul>
+                    <ul v-if="count==1" id="usermes">
+                        <li>用户名:{{message.account}}</li>
+                        <li>姓名:{{message.username}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="public-ifame mt20">
+    <div class="content">
+        <div class="clearfix"></div>
+        <div class="public-ifame-leftnav">
+            <div class="public-title-warrp">
+                <div class="public-ifame-title ">
+                    <a href="main.html" target="content">首页</a>
+                </div>
+            </div>
+            <ul class="left-nav-list">
+                <li class="public-ifame-item">
+                    <a href="javascript:;">基础信息维护</a>
+                    <div class="ifame-item-sub">
+                        <ul>
+                            <li><a href="news/news.html" target="content">组织机构信息</a></li>
+                            <li><a href="news/news.html" target="content">业务基础信息</a></li>
+                            <li><a href="news/news.html" target="content">车辆信息</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="public-ifame-item">
+                    <a href="javascript:;">车辆业务</a>
+                    <div class="ifame-item-sub">
+                        <ul>
+                            <li><a href="bikeBuy/bikebuy.html" target="content">车辆购入</a></li>
+                            <li><a href="bikeBuy/bikeinto.html" target="content">新车入桩</a></li>
+                            <li><a href="bikeRent/bikerent.html" target="content">车辆租出</a></li>
+                            <li><a href="bikeRent/bikereturn.html" target="content">车辆归还</a></li>
+                            <li><a href="news/news.html" target="content">车辆维修调出</a></li>
+                            <li><a href="news/news.html" target="content">车辆维修</a></li>
+                            <li><a href="news/news.html" target="content">车辆维修调入</a></li>
+                            <li><a href="news/news.html" target="content">车辆调出</a></li>
+                            <li><a href="news/news.html" target="content">车辆调入</a></li>
+                            <li><a href="news/news.html" target="content">车辆报废</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="public-ifame-item">
+                    <a href="javascript:;">卡业务</a>
+                    <div class="ifame-item-sub">
+                        <ul>
+                            <li><a href="news/news.html" target="content">卡充值</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="public-ifame-item">
+                    <a href="javascript:;">基础信息维护</a>
+                    <div class="ifame-item-sub">
+                        <ul>
+                            <li><a href="news/news.html" target="content">车点车辆信息联合查询</a></li>
+                            <li><a href="news/news.html" target="content">月度/年度车辆费用统计</a></li>
+                            <li><a href="news/news.html" target="content">车点使用率信息统计分析</a></li>
+                            <li><a href="news/news.html" target="content">实时、卡费用统计</a></li>
+                            <li><a href="news/news.html" target="content">月度/年度卡费用统计</a></li>
+                        </ul>
+                    </div>
+
+
+                </li>
+
+
+            </ul>
+        </div>
+        <!-- 右侧内容展示部分 -->
+        <div class="public-ifame-content">
+            <iframe name="content" src="success.html" frameborder="0" id="mainframe" scrolling="yes" marginheight="0"
+                    marginwidth="0" width="100%" style="height: 700px;"></iframe>
+        </div>
+    </div>
+</div>
+<script>
+    $().ready(function () {
+        var item = $(".public-ifame-item");
+
+        for (var i = 0; i < item.length; i++) {
+            $(item[i]).on('click', function () {
+                $(".ifame-item-sub").hide();
+                if ($(this.lastElementChild).css('display') == 'block') {
+                    $(this.lastElementChild).hide()
+                    $(".ifame-item-sub li").removeClass("active");
+                } else {
+                    $(this.lastElementChild).show();
+                    $(".ifame-item-sub li").on('click', function () {
+                        $(".ifame-item-sub li").removeClass("active");
+                        $(this).addClass("active");
+                    });
+                }
+            });
+        }
+    });
+</script>
+</body>
+<script type="text/javascript" >
+    var vue=new Vue({
+        el:"#user",
+        data:{
+            message:"",
+            counts:1,
+            count:0,
+            userif:0
+        },
+        methods: {
+            mes: function () {
+                this.count++==this.counts?this.count=0:''
+
+            },
+            out:function () {
+                sessionStorage.removeItem("user")
+                this.$http.post(
+                    "remove"
+                ).then(
+
+                        location.href="index.html"
+
+                )
+            }
+        }
+
+    });
+    var user=JSON.parse(sessionStorage.getItem("user"));
+    vue.message=user;
+    if(user!="") {
+        vue.userif = 1;
+    }
+
+
+
+
+
+</script>
+</html>

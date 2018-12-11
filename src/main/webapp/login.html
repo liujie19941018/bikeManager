@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登陆</title>
+    <link rel="stylesheet" href="css/reset.css"/>
+    <link rel="stylesheet" href="css/login.css"/>
+    <script type="text/javascript" src="js/vue.min.js"></script>
+    <script type="text/javascript" src="js/vue-resource.min.js"></script>
+    <script type="text/javascript" src="js/json2.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <style rel="stylesheet">
+        #submit{
+            margin-left: -200px;
+            cursor: pointer;
+
+        }
+        #restart{
+            cursor: pointer;
+        }
+        #test{
+            color: red;
+            font-size: 20px;
+            position: absolute;
+            margin-top: 20px;
+            margin-left: 30px;
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="page">
+    <div class="loginwarrp">
+        <div class="logo" style="font-family: 楷体;font-size: 50px;font-weight: bold">自行车管理系统</div>
+        <div class="login_form" style="font-weight: bold">
+            <li class="login-item">
+                <span>用户名：</span>
+                <input type="text" name="UserName" class="login_input" id="account" v-model="acc">
+            </li>
+            <li class="login-item">
+                <span>密　码：</span>
+                <input type="password" name="password" class="login_input" id="password" v-model="pas">
+            </li>
+            <li class="login-item verify">
+                <span>验证码：</span>
+                <input type="text" name="CheckCode" class="login_input verify_input" id="yzm" v-model="yzm">
+            </li>
+            <img src="images/verify.PNG" border="0" class="verifyimg" />
+            <div class="clearfix"></div>
+            <li class="login-sub">
+                <input type="button"  value="登录" @click="login" id="submit"/>
+                <input type="button" value="重置" @click="restart" id="restart"/>
+                <span id="test" v-model="test"></span>
+            </li>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    new Vue({
+        el:".login_form",
+        data:{
+            acc:"",
+            pas:"",
+            yzm:"",
+            test:""
+        },
+        methods:{
+            restart:function(){
+                this.acc="";
+                this.pas="";
+                this.yzm="";
+            },
+            login:function () {
+                this.test="";
+                if(this.acc==""){
+                    $("#test").text("用户名不能为空！")
+                    return;
+                }
+                if(this.pas==""){
+                    $("#test").text("密码不能为空！")
+                    return;
+                }
+                if(this.yzm==""){
+                    $("#test").text("验证码不能为空！")
+                    return;
+                }
+                if(this.yzm!="1150"){
+                    $("#test").text("验证码错误！")
+                    return;
+                }
+                this.$http.post(
+                    "login",
+                    {account:this.acc,password:this.pas},
+                    {emulateJSON:true}
+                ).then(function (data) {
+                    var user=data.body;
+                    sessionStorage.setItem("user",JSON.stringify(user));
+                    if(user!=""){
+                        alert("登陆成功！")
+                        location.href="index.html";
+                    }else {
+                        this.test="账号密码错误！"
+                    }
+                });
+
+            }
+        }
+    })
+
+</script>
+</html>

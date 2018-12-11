@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aowin.dao.IUserDao">
+    <select id="getlogin" parameterType="User" resultType="User">
+        select u.LOGIN_NAME account,u.PASSWORD password,u.USERNAME username,f.url from syuser u,(SELECT s.*,m.url FROM sypermission s,msphase m where s.phaseid=m.phaseid)f where u.role_id=f.roleid
+        and u.LOGIN_NAME=#{account} and u.PASSWORD=#{password}
+    </select>
+</mapper>
